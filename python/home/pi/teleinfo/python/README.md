@@ -11,7 +11,7 @@ Script python pour logger dans une base sqlite3 ou dans une base mongodb.
 (ligne commentée pour la base sqlite3)
 Attention à la durée de vie de la carte SD si stockage de la base sqlite3 sur celle-ci.
 
-Le décodage des trames de compteur EDF prennent en compte uniquement le tarif bleu pour le moment.
+Le décodage des trames de compteur EDF prend en compte uniquement le tarif bleu pour le moment.
 
 logging.conf
 ------------
