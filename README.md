@@ -8,6 +8,15 @@ Montage sur lien série 3.3V (Raspberry Pi / Beaglebone)
 
 [Mes slides de devoxx France sur Parleys (à partir du slide 43)](http://www.parleys.com/play/5156acf2e4b0c779d7881400/)
 
+Version JavaScript (node.js)
+----------------------------
+Module node.js pour décoder les trames téléinfo.
+Tester du Raspberry Pi avec tarif bleu (devrait fonctionner avec tous les tarifs)
+
+Script d'exemple d'utilisation du module :
+https://github.com/lhuet/teleinfo/blob/master/nodejs/test_teleinfo.js
+
+
 Version python
 --------------
 Logging dans une base mongodb / sqlite3
