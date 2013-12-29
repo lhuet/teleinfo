@@ -3,13 +3,12 @@ var teleinfo = require('./teleinfo');
 var mongodb = require('mongodb');
 var util = require('util');
 
-var trameEvents;
-var conso = {};
+var infosCompteur = {};
 
 function tarifbleu(port, cronTime, datalogger) {
 
-  trameEvents = teleinfo.teleinfo(port);
-  razconso();
+  var trameEvents = teleinfo.teleinfo(port);
+  razinfosCompteur();
   trameEvents.on('tramedecodee', function (data) {
     majData(data);
   });
@@ -18,59 +17,60 @@ function tarifbleu(port, cronTime, datalogger) {
       // Fonction exécutée toutes les minutes
       if (typeof datalogger === 'function') {
         // Suppression propriétés internes
-        delete conso.psum;
-        delete conso.isum;
-        delete conso.nb_mesure;
-        datalogger(conso);
+        delete infosCompteur.psum;
+        delete infosCompteur.isum;
+        delete infosCompteur.nb_mesure;
+        datalogger(infosCompteur);
       }
       else {
-        console.log(util.inspect(conso));
+        console.log(util.inspect(infosCompteur));
       }
       // Raz moyenne
-      razconso();
+      razinfosCompteur();
     }, function () {
       // Fonction exécutée lorsque le job s'arrête
       console.log('Job stoppé');
     },
     true
   );
-
-
 }
 
-
-function razconso() {
-  conso.imini = 30; // max de la souscription
-  conso.imaxi= 0;
-  conso.imoy= 0;
-  conso.isum= 0;
-  conso.pmini= 8000; // max la souscription
-  conso.pmaxi= 0;
-  conso.pmoy= 0;
-  conso.psum= 0;
-  conso.nb_mesure= 0;
+function razinfosCompteur() {
+  infosCompteur.imini = 30; // max de la souscription
+  infosCompteur.imaxi= 0;
+  infosCompteur.imoy= 0;
+  infosCompteur.isum= 0;
+  infosCompteur.pmini= 8000; // max la souscription
+  infosCompteur.pmaxi= 0;
+  infosCompteur.pmoy= 0;
+  infosCompteur.psum= 0;
+  infosCompteur.nb_mesure= 0;
+  infosCompteur.pinst = 0;
 }
 
 function majData(data) {
-  conso.nb_mesure += 1;
-  if (data['IINST']<conso.imini) {
-    conso.imini = data['IINST'];
+  infosCompteur.nb_mesure += 1;
+  if (data['IINST']<infosCompteur.imini) {
+    infosCompteur.imini = data['IINST'];
   }
-  if (data['IINST']>conso.imaxi) {
-    conso.imaxi = data['IINST'];
+  if (data['IINST']>infosCompteur.imaxi) {
+    infosCompteur.imaxi = data['IINST'];
   }
-  conso.isum += data['IINST'];
-  conso.imoy = conso.isum / conso.nb_mesure;
-  if (data['PAPP']<conso.pmini) {
-    conso.pmini = data['PAPP'];
+  infosCompteur.isum += data['IINST'];
+  infosCompteur.imoy = infosCompteur.isum / infosCompteur.nb_mesure;
+  if (data['PAPP']<infosCompteur.pmini) {
+    infosCompteur.pmini = data['PAPP'];
   }
-  if (data['PAPP']>conso.pmaxi) {
-    conso.pmaxi = data['PAPP'];
+  if (data['PAPP']>infosCompteur.pmaxi) {
+    infosCompteur.pmaxi = data['PAPP'];
   }
-  conso.psum += data['PAPP'];
-  conso.pmoy = conso.psum / conso.nb_mesure;
-  conso.index = data['BASE'];
+  infosCompteur.psum += data['PAPP'];
+  infosCompteur.pmoy = infosCompteur.psum / infosCompteur.nb_mesure;
+  // Index compteur en Wh
+  infosCompteur.index = data['BASE'];
+  // puissance apparente instantannée en VA
+  infosCompteur.pinst = data['PAPP'];
 }
 
-
 exports.tarifbleu = tarifbleu;
+exports.infosCompteur = infosCompteur;
