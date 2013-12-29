@@ -1,4 +1,4 @@
-var serialport = require("serialport");
+var serialport = require('serialport');
 var events = require('events');
 var util = require('util');
 
@@ -9,7 +9,7 @@ function teleinfo(port) {
 	var serialPort = new serialport.SerialPort(port, {
 		  baudrate: 1200,
 		  dataBits: 7,
-		  parity: "even",
+		  parity: 'even',
 		  stopBits: 1,
 		  // Caractères séparateurs = fin de trame + début de trame
 		  parser: serialport.parsers.readline(String.fromCharCode(13,3,2,10))
