@@ -1,10 +1,43 @@
 var cronJob = require('cron').CronJob;
 var teleinfo = require('./teleinfo');
+var mongodb = require('mongodb');
 var util = require('util');
 
-var trameEvents = teleinfo.teleinfo('/dev/ttyAMA0');
-
+var trameEvents;
 var conso = {};
+
+function tarifbleu(port, cronTime, datalogger) {
+
+  trameEvents = teleinfo.teleinfo(port);
+  razconso();
+  trameEvents.on('tramedecodee', function (data) {
+    majData(data);
+  });
+
+  var job = new cronJob(cronTime, function(){
+      // Fonction exécutée toutes les minutes
+      if (typeof datalogger === 'function') {
+        // Suppression propriétés internes
+        delete conso.psum;
+        delete conso.isum;
+        delete conso.nb_mesure;
+        datalogger(conso);
+      }
+      else {
+        console.log(util.inspect(conso));
+      }
+      // Raz moyenne
+      razconso();
+    }, function () {
+      // Fonction exécutée lorsque le job s'arrête
+      console.log('Job stoppé');
+    },
+    true
+  );
+
+
+}
+
 
 function razconso() {
   conso.imini = 30; // max de la souscription
@@ -18,10 +51,7 @@ function razconso() {
   conso.nb_mesure= 0;
 }
 
-razconso();
-
-trameEvents.on('tramedecodee', function (data) {
-  //console.log(util.inspect(data));
+function majData(data) {
   conso.nb_mesure += 1;
   if (data['IINST']<conso.imini) {
     conso.imini = data['IINST'];
@@ -40,20 +70,7 @@ trameEvents.on('tramedecodee', function (data) {
   conso.psum += data['PAPP'];
   conso.pmoy = conso.psum / conso.nb_mesure;
   conso.index = data['BASE'];
-});
+}
 
 
-var job = new cronJob('00 * * * * *', function(){
-    // Fonction exécutée toutes les minutes
-    console.log(util.inspect(conso));
-    // TODO : Logguer dans une base mongo
-    // Raz moyenne
-    razconso();
-  }, function () {
-    // Fonction exécutée lorsque le job s'arrête
-    console.log('Job stoppé');
-  },
-  true
-);
-
-console.log("Lancement du cron téléinfo");
+exports.tarifbleu = tarifbleu;
