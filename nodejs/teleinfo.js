@@ -55,7 +55,24 @@ function decodeLigne(ligneBrute, trame) {
       sum = (sum & 63) + 32;
       if (sum === ligneBrute.charCodeAt(j+1)) {
         // Checksum ok -> on ajoute la propriété à la trame
-        trame[elementsLigne[0]]= elementsLigne[1];
+        // Conversion en valeur numérique pour certains cas
+        switch (elementsLigne[0].substr(0,4)) {
+          case 'BASE': // Index Tarif bleu
+          case 'HCHC': // Index Heures creuses
+          case 'HCHP': // Index Heures pleines
+          case 'EJPH': // Index EJP (HN et HPM)
+          case 'BBRH': // Index Tempo (HC/HP en jours Blanc, Bleu et Rouge)
+          case 'ISOU': // Intensité souscrite
+          case 'IINS': // Intensité instantannée (1/2/3 pour triphasé)
+          case 'ADPS': // Avertissement de dépassement
+          case 'IMAX': // Intensité max appelée (1/2/3 pour triphasé)
+          case 'PAPP': // Puissance apparente
+          case 'PMAX': // Puissance max triphasée atteinte
+            trame[elementsLigne[0]]= Number(elementsLigne[1]);
+            break;
+          default:
+            trame[elementsLigne[0]]= elementsLigne[1];
+        }
         return true;
       } else {
         // Checksum ko
