@@ -81,7 +81,7 @@ function majData(data) {
   // puissance apparente instantannée en VA
   infosCompteur.pinst = data['PAPP'];
   // intensité instantannée en A
-  infosCompteur.iinst = data['ISOUSC'];
+  infosCompteur.iinst = data['IINST'];
 }
 
 exports.tarifbleu = tarifbleu;
