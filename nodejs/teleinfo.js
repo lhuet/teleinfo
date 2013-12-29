@@ -78,7 +78,6 @@ function decodeLigne(ligneBrute, trame) {
         // Checksum ko
         return false;
       }
-      console.log("décodage ligne: sum / chk = " + sum + " / " + ligneBrute.charCodeAt(j+1));
     };
 };
 
