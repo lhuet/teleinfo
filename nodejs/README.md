@@ -29,12 +29,12 @@ Objet récupéré (data) du type :
 
     { ADCO: '000000000000',
       OPTARIF: 'BASE',
-      ISOUSC: '30',
-      BASE: '006366719',
+      ISOUSC: 30,
+      BASE: 6366719,
       PTEC: 'TH..',
-      IINST: '001',
-      IMAX: '030',
-      PAPP: '00300',
+      IINST: 1,
+      IMAX: 30,
+      PAPP: 0300,
       MOTDETAT: '000000' }
 
 
