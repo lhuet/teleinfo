@@ -34,6 +34,18 @@ function tarifbleu(port, cronTime, datalogger) {
   );
 }
 
+function getPapp() {
+  return infosCompteur.pinst;
+}
+
+function getIntensite() {
+  return infosCompteur.iinst;
+}
+
+function getIndex() {
+  return infosCompteur.index;
+}
+
 function razinfosCompteur() {
   infosCompteur.imini = 30; // max de la souscription
   infosCompteur.imaxi= 0;
@@ -44,7 +56,6 @@ function razinfosCompteur() {
   infosCompteur.pmoy= 0;
   infosCompteur.psum= 0;
   infosCompteur.nb_mesure= 0;
-  infosCompteur.pinst = 0;
 }
 
 function majData(data) {
@@ -69,7 +80,11 @@ function majData(data) {
   infosCompteur.index = data['BASE'];
   // puissance apparente instantannée en VA
   infosCompteur.pinst = data['PAPP'];
+  // intensité instantannée en A
+  infosCompteur.iinst = data['ISOUSC'];
 }
 
 exports.tarifbleu = tarifbleu;
-exports.infosCompteur = infosCompteur;
+exports.getPuissanceApparente = getPapp;
+exports.getIntensite = getIntensite;
+exports.getIndex = getIndex;
