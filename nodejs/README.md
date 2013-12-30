@@ -1,5 +1,5 @@
 Module teleinfo
----------------
+===============
 Module node.js pour décoder les trames téléinfo.
 Il devrait fonctionner avec tous les tarifs et sur tout matériel compatible node avec un port série
 (Testé sur Raspberry Pi avec tarif bleu).
@@ -51,7 +51,7 @@ Objet récupéré (data) du type :
 ```
 
 Module tarifbleu
-----------------
+================
 Module node.js exploitant les données spécifiques du tarif bleu.
 Ce module utilise le module [cron](https://github.com/ncb000gt/node-cron) et utilise une fonction callback qu'elle exécute à fréquence donnée (configuration du cron).
 
@@ -99,3 +99,10 @@ avec :
 * pmini, pmaxi, pmoy : puissance apparente mini/maxi/moyenne pendant la période (en VA)
 * index : index compteur (en Wh)
 * pinst, iinst : puissance apparente et intensité instantanées à la fin de la période
+
+Les valeurs instantannées sont disponibles via les fonctions :
+```javascript
+tarifbleu.getPuissanceApparente();
+tarifbleu.getIntensite();
+tarifbleu.getIndex();
+```
