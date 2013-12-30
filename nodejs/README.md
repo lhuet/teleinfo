@@ -13,12 +13,16 @@ Utilisation
 
 Importer le module :
 
-    var teleinfo = require('./teleinfo');
+```javascript
+var teleinfo = require('./teleinfo');
+```
 
 Récupérer l'instance d'EventEmitter du module en appelant la fonction teleinfo qui prend en paramètre le port série :
-    
-    // Exemple d'utilisation sur Raspberry Pi
-    var trameEvents = teleinfo.teleinfo('/dev/ttyAMA0');
+
+```javascript
+// Exemple d'utilisation sur Raspberry Pi
+var trameEvents = teleinfo.teleinfo('/dev/ttyAMA0');
+```
 
 Les trames téléinfo sont envoyées sous forme d'évènements :
 * trame : trames brutes non vérifiées (utile uniquement à des fins de debug)
@@ -26,12 +30,15 @@ Les trames téléinfo sont envoyées sous forme d'évènements :
 
 Exemple :
 
-    trameEvents.on('tramedecodee', function (data) {
-      console.log(util.inspect(data));
-    });
+```javascript
+trameEvents.on('tramedecodee', function (data) {
+  console.log(util.inspect(data));
+});
+```
 
 Objet récupéré (data) du type :
 
+```javascript
     { ADCO: '000000000000',
       OPTARIF: 'BASE',
       ISOUSC: 30,
@@ -41,6 +48,7 @@ Objet récupéré (data) du type :
       IMAX: 30,
       PAPP: 300,
       MOTDETAT: '000000' }
+```
 
 Module tarifbleu
 ----------------
@@ -56,11 +64,15 @@ Utilisation
 
 Importer le module :
 
-    var tarifbleu = require('./tarifbleu');
+```javascript
+var tarifbleu = require('./tarifbleu');
+```
 
 Démarrer le 'job' en utilisant la fonction tarifbleu :
 
-    tarifbleu.tarifbleu('/dev/ttyAMA0', '00 * * * * *', datalogger);
+```javascript
+tarifbleu.tarifbleu('/dev/ttyAMA0', '00 * * * * *', datalogger);
+```
 
 Les paramètres de cette fonction sont :
 
@@ -70,6 +82,7 @@ Les paramètres de cette fonction sont :
 
 Contenu de l'objet de données :
 
+```javascript
     { imini: 1,
       imaxi: 1,
       imoy: 1,
@@ -79,6 +92,7 @@ Contenu de l'objet de données :
       index: 6401853,
       pinst: 210,
       iinst: 1 }
+```
 
 avec :
 * imini, imaxi, imoy : l'intensité mini/maxi/moyenne pendant la période (en A)
